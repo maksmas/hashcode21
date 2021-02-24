@@ -17,8 +17,8 @@ type Delivery struct {
 const fileName = "e_many_teams"
 
 func main() {
-	teams, allPizzas, ingrCount := ReadInput(fileName + ".in")
-	fmt.Println(teams, len(allPizzas), ingrCount)
+	teams, allPizzas := ReadInput(fileName + ".in")
+	fmt.Println(fileName, teams, len(allPizzas))
 
 	sort.Slice(allPizzas, func(i, j int) bool {
 		return allPizzas[i].score < allPizzas[j].score
@@ -32,17 +32,13 @@ func main() {
 		allPizzas = allPizzas[1:]
 
 		for {
-			nextPizzaIndex, found := findMatch(delivPizzas, allPizzas)
-
-			if !found {
-				break
-			}
+			nextPizzaIndex := findMatch(delivPizzas, allPizzas)
 
 			delivPizzas = append(delivPizzas, allPizzas[nextPizzaIndex])
 			allPizzas = rem(allPizzas, nextPizzaIndex)
 
 			if len(delivPizzas) == 5 {
-				fmt.Println(teams, len(allPizzas), ingrCount)
+				fmt.Println(teams, len(allPizzas))
 				panic("Shouldn't happen")
 			}
 
@@ -56,7 +52,8 @@ func main() {
 			pizzaIds: extractIds(delivPizzas),
 		})
 
-		teams[len(delivPizzas)-2] = teams[len(delivPizzas)-2] - 1
+		teamIndex := len(delivPizzas) - 2
+		teams[teamIndex] = teams[teamIndex] - 1
 
 		if noMoreDeliveries(len(allPizzas), teams) {
 			break
@@ -68,12 +65,36 @@ func main() {
 }
 
 // return index in available array
-func findMatch(pizza []Pizza, available []Pizza) (int, bool) {
-	// todo implement
-	return len(available) - 1, true
+func findMatch(pizza []Pizza, available []Pizza) int {
+	return len(available) - 1
+}
+
+// surprisingly - this produces worse results
+func findMatchV2(alreadyMatched []Pizza, available []Pizza) int {
+	alreadyMatchedIngredientSet := make(map[Ingredient]bool)
+
+	for _, p := range alreadyMatched {
+		for _, i := range p.ingredients {
+			alreadyMatchedIngredientSet[i] = true
+		}
+	}
+
+	for i := len(available) - 1; i > 0; i-- {
+		nextCandidate := available[i]
+
+		for _, possibleIngredient := range nextCandidate.ingredients {
+			if _, present := alreadyMatchedIngredientSet[possibleIngredient]; present {
+				return i
+			}
+		}
+	}
+
+	return len(available) - 1
 }
 
 func noMoreDeliveries(leftPizzas int, teams [3]uint) bool {
+	// fmt.Println("Debug: ", leftPizzas, teams)
+
 	if leftPizzas < 2 {
 		return true
 	} else if leftPizzas < 3 && teams[0] == 0 {

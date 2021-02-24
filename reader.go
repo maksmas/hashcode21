@@ -20,7 +20,7 @@ var lastIngredient Ingredient = 0
 var ingredientIdMap map[string]Ingredient
 var ingredientCount map[Ingredient]uint
 
-func ReadInput(fileName string) ([3]uint, []Pizza, map[Ingredient]uint) {
+func ReadInput(fileName string) ([3]uint, []Pizza) {
 	ingredientCount = make(map[Ingredient]uint)
 	ingredientIdMap = make(map[string]Ingredient)
 	inp, err := os.Open(fileName)
@@ -43,7 +43,7 @@ func ReadInput(fileName string) ([3]uint, []Pizza, map[Ingredient]uint) {
 		pizzas[i].score = calcPizzaScore(pizzas[i])
 	}
 
-	return [3]uint{teamsOf2, teamsOf3, teamsOf4}, pizzas, ingredientCount
+	return [3]uint{teamsOf2, teamsOf3, teamsOf4}, pizzas
 }
 
 func readPizza(reader *bufio.Reader, id uint) Pizza {
