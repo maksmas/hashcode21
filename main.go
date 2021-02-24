@@ -28,9 +28,7 @@ func main() {
 
 	for {
 		delivPizzas := make([]Pizza, 1, 4)
-		delivPizzaIds := make([]int, 1, 4)
 		delivPizzas[0] = allPizzas[0]
-		delivPizzaIds[0] = int(allPizzas[0].id)
 		allPizzas = allPizzas[1:]
 
 		for {
@@ -41,7 +39,6 @@ func main() {
 			}
 
 			delivPizzas = append(delivPizzas, allPizzas[nextPizzaIndex])
-			delivPizzaIds = append(delivPizzaIds, int(allPizzas[nextPizzaIndex].id))
 			allPizzas = rem(allPizzas, nextPizzaIndex)
 
 			if len(delivPizzas) == 5 {
@@ -56,7 +53,7 @@ func main() {
 
 		deliveries = append(deliveries, Delivery{
 			teamSize: len(delivPizzas),
-			pizzaIds: delivPizzaIds,
+			pizzaIds: extractIds(delivPizzas),
 		})
 
 		teams[len(delivPizzas)-2] = teams[len(delivPizzas)-2] - 1
@@ -94,4 +91,14 @@ func noMoreDeliveries(leftPizzas int, teams [3]uint) bool {
 
 func rem(slice []Pizza, i int) []Pizza {
 	return append(slice[:i], slice[i+1:]...)
+}
+
+func extractIds(pizzas []Pizza) []int {
+	ids := make([]int, len(pizzas), len(pizzas))
+
+	for i := 0; i < len(pizzas); i++ {
+		ids[i] = int(pizzas[i].id)
+	}
+
+	return ids
 }
