@@ -4,6 +4,4 @@ const fileName = "a.txt"
 
 func main() {
 	ReadInput(fileName)
-
-	for ()
 }
