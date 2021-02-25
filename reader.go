@@ -63,7 +63,7 @@ func ReadInput(fileName string) {
 		}
 
 		bIntersection.out = append(bIntersection.out, s)
-		eIntersection.in = append(eIntersection.out, s)
+		eIntersection.in = append(eIntersection.in, s)
 	}
 
 	for i := 0; i < V; i++ {
