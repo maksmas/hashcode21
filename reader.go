@@ -83,6 +83,9 @@ func ReadInput(fileName string) {
 		cars = append(cars, Car{streetNames: streets})
 	}
 
+	err = inp.Close()
+	check(err)
+
 	fmt.Println(cars)
 	printGraph()
 }

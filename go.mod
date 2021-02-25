@@ -1,3 +1,3 @@
-module hashcode21
+module main
 
 go 1.16
