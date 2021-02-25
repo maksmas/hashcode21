@@ -29,6 +29,7 @@ var intersections = make(map[int]*Intersection)
 var cars = make([]Car, 0)
 
 var stritiNaInti = make(map[string]int)
+var streetsWithNoTraffic = make([]string, 0)
 
 func ReadInput(fileName string) {
 	inp, err := os.Open(fileName)
@@ -53,6 +54,8 @@ func ReadInput(fileName string) {
 		title := parts[2]
 		length, err := strconv.Atoi(parts[3])
 		check(err)
+
+		stritiNaInti[title] = 0
 
 		bIntersection := getOrCreate(B)
 		eIntersection := getOrCreate(E)
@@ -89,9 +92,10 @@ func ReadInput(fileName string) {
 
 	err = inp.Close()
 	check(err)
-
-	fmt.Printf("%+v\n", stritiNaInti)
-	printGraph()
+	findStreetsWithNoTraffic()
+	fmt.Println(streetsWithNoTraffic)
+	//fmt.Printf("%+v\n", stritiNaInti)
+	//printGraph()
 }
 
 func getOrCreate(id int) *Intersection {
@@ -110,6 +114,15 @@ func getOrCreate(id int) *Intersection {
 	intersections[id] = &newI
 
 	return &newI
+}
+
+func findStreetsWithNoTraffic() []string {
+	for street, count := range stritiNaInti {
+		if count == 0 {
+			streetsWithNoTraffic = append(streetsWithNoTraffic, street)
+		}
+	}
+	return streetsWithNoTraffic
 }
 
 func printGraph() {
