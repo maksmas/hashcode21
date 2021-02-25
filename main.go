@@ -1,7 +1,5 @@
 package main
 
-import "fmt"
-
 //const fileName = "a.txt"
 //const fileName = "b.txt"
 //const fileName = "c.txt"
@@ -36,13 +34,38 @@ func main() {
 				time:       1,
 			})
 		} else {
+
+			countMap := make(map[Street]int)
+
 			for _, street := range intersection.in {
 				if stritiNaInti[street.title] > 0 {
-					s.lights = append(s.lights, TrafficLight{
-						streetName: street.title,
-						time:       1,
-					})
+					countMap[street] = stritiNaInti[street.title]
 				}
+			}
+
+			ratio := CalculateTrafficRate(countMap)
+			ratios := NormalizeRatio(ratio)
+			secondOrder := make([]TrafficLight, 0)
+			for _, street := range intersection.in {
+				if stritiNaInti[street.title] > 0 {
+					countMap[street] = stritiNaInti[street.title]
+
+					if _, ok := firstHits[street.title]; ok {
+						s.lights = append(s.lights, TrafficLight{
+							streetName: street.title,
+							time:       ratios[street],
+						})
+					} else {
+						secondOrder = append(secondOrder, TrafficLight{
+							streetName: street.title,
+							time:       ratios[street],
+						})
+					}
+				}
+			}
+
+			for _, so := range secondOrder {
+				s.lights = append(s.lights, so)
 			}
 		}
 
@@ -51,6 +74,6 @@ func main() {
 		}
 	}
 
-	fmt.Println(schedules)
+	//fmt.Println(schedules)
 	write(fileName+".out", schedules)
 }

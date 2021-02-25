@@ -19,16 +19,18 @@ type Intersection struct {
 }
 
 type Street struct {
-	title  string
-	length int
-	from   *Intersection
-	to     *Intersection
+	firstHit int
+	title    string
+	length   int
+	from     *Intersection
+	to       *Intersection
 }
 
 var intersections = make(map[int]*Intersection)
 var cars = make([]Car, 0)
 
 var stritiNaInti = make(map[string]int)
+var firstHits = make(map[string]int)
 var streetsWithNoTraffic = make([]string, 0)
 
 func ReadInput(fileName string) {
@@ -79,7 +81,7 @@ func ReadInput(fileName string) {
 
 		P, err := strconv.Atoi(parts[0])
 		check(err)
-
+		firstHits[parts[1]]++
 		streets := make([]string, P, P)
 		for j := 0; j < P; j++ {
 			streetName := parts[j+1]
@@ -93,7 +95,8 @@ func ReadInput(fileName string) {
 	err = inp.Close()
 	check(err)
 	findStreetsWithNoTraffic()
-	fmt.Println(streetsWithNoTraffic)
+	fmt.Println(firstHits)
+	//fmt.Println(streetsWithNoTraffic)
 	//fmt.Printf("%+v\n", stritiNaInti)
 	//printGraph()
 }

@@ -27,8 +27,8 @@ func NormalizeRatio(ratios map[Street]float64) map[Street]int {
 		if seconds < 1 {
 			seconds = 1
 		}
-		if seconds > 10 {
-			seconds = 10
+		if seconds > 5 {
+			seconds = 5
 		}
 		result[street] = seconds
 	}
