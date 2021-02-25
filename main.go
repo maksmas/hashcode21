@@ -2,12 +2,13 @@ package main
 
 import "fmt"
 
-//const fileName = "a.txt"
+const fileName = "a.txt"
+
 //const fileName = "b.txt"
 //const fileName = "c.txt"
 //const fileName = "d.txt"
 //const fileName = "e.txt"
-const fileName = "f.txt"
+//const fileName = "f.txt"
 
 type Schedule struct {
 	intersectionId int

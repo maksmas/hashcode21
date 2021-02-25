@@ -28,6 +28,8 @@ type Street struct {
 var intersections = make(map[int]*Intersection)
 var cars = make([]Car, 0)
 
+var stritiNaInti = make(map[string]int)
+
 func ReadInput(fileName string) {
 	inp, err := os.Open(fileName)
 	reader := bufio.NewReader(inp)
@@ -77,7 +79,9 @@ func ReadInput(fileName string) {
 
 		streets := make([]string, P, P)
 		for j := 0; j < P; j++ {
-			streets[j] = parts[j+1]
+			streetName := parts[j+1]
+			streets[j] = streetName
+			stritiNaInti[streetName]++
 		}
 
 		cars = append(cars, Car{streetNames: streets})
@@ -86,7 +90,7 @@ func ReadInput(fileName string) {
 	err = inp.Close()
 	check(err)
 
-	fmt.Println(cars)
+	fmt.Printf("%+v\n", stritiNaInti)
 	printGraph()
 }
 
@@ -109,9 +113,11 @@ func getOrCreate(id int) *Intersection {
 }
 
 func printGraph() {
+	fmt.Println("Graph:")
 	for _, v := range intersections {
 		fmt.Printf("%d in: %+v  out: %+v\n", v.id, v.in, v.out)
 	}
+	fmt.Println("===========================")
 }
 
 func check(e error) {
