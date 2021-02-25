@@ -6,9 +6,8 @@ import "fmt"
 //const fileName = "b.txt"
 //const fileName = "c.txt"
 //const fileName = "d.txt"
-const fileName = "e.txt"
-
-//const fileName = "f.txt"
+//const fileName = "e.txt"
+const fileName = "f.txt"
 
 type Schedule struct {
 	intersectionId int
@@ -32,10 +31,23 @@ func main() {
 		}
 
 		countMap := make(map[Street]int)
-		for _, street := range intersection.in {
-			//if stritiNaInti[street.title] > 0 {
-			countMap[street] = stritiNaInti[street.title]
-			//}
+
+		if len(intersection.in) == 0 {
+			s.lights = append(s.lights, TrafficLight{
+				streetName: intersection.in[0].title,
+				time:       1,
+			})
+		} else {
+			for _, street := range intersection.in {
+				if stritiNaInti[street.title] > 0 {
+					//s.lights = append(s.lights, TrafficLight{
+					//	streetName: street.title,
+					//	time:       1,
+					//})
+
+					countMap[street] = stritiNaInti[street.title]
+				}
+			}
 		}
 
 		rate := CalculateTrafficRate(countMap)
@@ -48,7 +60,9 @@ func main() {
 			})
 		}
 
-		schedules = append(schedules, s)
+		if len(s.lights) > 0 {
+			schedules = append(schedules, s)
+		}
 	}
 
 	fmt.Println(schedules)
