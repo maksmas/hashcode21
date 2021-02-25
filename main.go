@@ -30,8 +30,6 @@ func main() {
 			lights:         make([]TrafficLight, 0),
 		}
 
-		countMap := make(map[Street]int)
-
 		if len(intersection.in) == 0 {
 			s.lights = append(s.lights, TrafficLight{
 				streetName: intersection.in[0].title,
@@ -40,24 +38,12 @@ func main() {
 		} else {
 			for _, street := range intersection.in {
 				if stritiNaInti[street.title] > 0 {
-					//s.lights = append(s.lights, TrafficLight{
-					//	streetName: street.title,
-					//	time:       1,
-					//})
-
-					countMap[street] = stritiNaInti[street.title]
+					s.lights = append(s.lights, TrafficLight{
+						streetName: street.title,
+						time:       1,
+					})
 				}
 			}
-		}
-
-		rate := CalculateTrafficRate(countMap)
-		normalized := NormalizeRatio(rate)
-
-		for k, v := range normalized {
-			s.lights = append(s.lights, TrafficLight{
-				streetName: k.title,
-				time:       v,
-			})
 		}
 
 		if len(s.lights) > 0 {
